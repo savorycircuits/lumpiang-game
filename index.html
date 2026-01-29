@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumpiang Reflex Game</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fff8e1;
+  text-align: center;
+}
+#gameArea {
+  position: relative;
+  width: 100%;
+  height: 90vh;
+  overflow: hidden;
+  background: #ffecb3;
+}
+.item {
+  position: absolute;
+  font-size: 40px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+}
+.item.good {
+  background-color: #c8e6c9; /* light green */
+  border-color: #4caf50;
+}
+.item.bad {
+  background-color: #ffcdd2; /* light red */
+  border-color: #f44336;
+}
+#score {
+  font-size: 22px;
+  padding: 10px;
+  background: #ff9800;
+  color: white;
+}
+#gameOver {
+  display: none;
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  font-size: 26px;
+}
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+</style>
+</head>
+<body>
+
+<h2>🍳 Lumpiang Reflex Challenge!</h2>
+<div id="score">Score: 0</div>
+<div id="gameArea"></div>
+
+<div id="gameOver">
+  <p>Game Over 😢</p>
+  <p id="finalScore"></p>
+  <button onclick="location.reload()">Play Again</button>
+</div>
+
+<!-- Sounds -->
+<audio id="dingSound" src="https://freesound.org/data/previews/341/341695_3248244-lq.mp3"></audio>
+<audio id="buzzSound" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3"></audio>
+
+<script>
+const gameArea = document.getElementById("gameArea");
+const ding = document.getElementById("dingSound");
+const buzz = document.getElementById("buzzSound");
+
+let score = 0;
+let gameRunning = true;
+
+// Lumpiang ingredients
+const goodItems = ["🥬","🥕","🧅","🥔","🥩"];
+const badItems = ["🌶️","🔥","❌"];
+
+function createItem() {
+  if (!gameRunning) return;
+
+  const item = document.createElement("div");
+  item.classList.add("item");
+
+  const isGood = Math.random() > 0.3;
+  item.innerText = isGood
+    ? goodItems[Math.floor(Math.random() * goodItems.length)]
+    : badItems[Math.floor(Math.random() * badItems.length)];
+
+  item.dataset.good = isGood;
+  item.classList.add(isGood ? "good" : "bad");
+
+  item.style.left = Math.random() * (window.innerWidth - 50) + "px";
+  item.style.top = "0px";
+  gameArea.appendChild(item);
+
+  let speed = 2 + Math.random() * 3;
+
+  const fall = setInterval(() => {
+    let top = item.offsetTop;
+    item.style.top = top + speed + "px";
+
+    if (top > window.innerHeight) {
+      clearInterval(fall);
+      item.remove();
+      if (isGood) {
+        buzz.play(); // missed good item
+        endGame();
+      }
+    }
+  }, 20);
+
+  item.onclick = () => {
+    clearInterval(fall);
+    item.remove();
+    if (isGood) {
+      score++;
+      document.getElementById("score").innerText = "Score: " + score;
+      ding.play();
+    } else {
+      buzz.play();
+      endGame();
+    }
+  };
+}
+
+function endGame() {
+  gameRunning = false;
+  document.getElementById("finalScore").innerText =
+    "Your Score: " + score;
+  document.getElementById("gameOver").style.display = "block";
+}
+
+setInterval(createItem, 900);
+</script>
+
+</body>
+</html>
