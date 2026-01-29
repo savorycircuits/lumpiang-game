@@ -1,62 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lumpiang Reflex Game</title>
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #fff8e1;
-  text-align: center;
-}
-#gameArea {
-  position: relative;
-  width: 100%;
-  height: 90vh;
-  overflow: hidden;
-  background: #ffecb3;
-}
-.item {
-  position: absolute;
-  font-size: 40px;
-  cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 8px;
-  border: 2px solid transparent;
-}
-.item.good {
-  background-color: #c8e6c9; /* light green */
-  border-color: #4caf50;
-}
-.item.bad {
-  background-color: #ffcdd2; /* light red */
-  border-color: #f44336;
-}
-#score {
-  font-size: 22px;
-  padding: 10px;
-  background: #ff9800;
-  color: white;
-}
-#gameOver {
-  display: none;
-  position: absolute;
-  top: 40%;
-  width: 100%;
-  font-size: 26px;
-}
-button {
-  padding: 10px 20px;
-  font-size: 18px;
-  background: #ff5722;
-  color: white;
-  border: none;
-  border-radius: 6px;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumpiang Reflex Game</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JLYGWZTK9G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-JLYGWZTK9G');
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff8e1;
+      text-align: center;
+    }
+    #gameArea {
+      position: relative;
+      width: 100%;
+      height: 90vh;
+      overflow: hidden;
+      background: #ffecb3;
+    }
+    .item {
+      position: absolute;
+      font-size: 40px;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 2px solid transparent;
+    }
+    .item.good {
+      background-color: #c8e6c9;
+      border-color: #4caf50;
+    }
+    .item.bad {
+      background-color: #ffcdd2;
+      border-color: #f44336;
+    }
+    #score {
+      font-size: 22px;
+      padding: 10px;
+      background: #ff9800;
+      color: white;
+    }
+    #gameOver {
+      display: none;
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      font-size: 26px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #ff5722;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
 </head>
+
 <body>
 
 <h2>🍳 Lumpiang Reflex Challenge!</h2>
@@ -81,7 +93,6 @@ const buzz = document.getElementById("buzzSound");
 let score = 0;
 let gameRunning = true;
 
-// Lumpiang ingredients
 const goodItems = ["🥬","🥕","🧅","🥔","🥩"];
 const badItems = ["🌶️","🔥","❌"];
 
@@ -113,7 +124,7 @@ function createItem() {
       clearInterval(fall);
       item.remove();
       if (isGood) {
-        buzz.play(); // missed good item
+        buzz.play();
         endGame();
       }
     }
@@ -135,8 +146,7 @@ function createItem() {
 
 function endGame() {
   gameRunning = false;
-  document.getElementById("finalScore").innerText =
-    "Your Score: " + score;
+  document.getElementById("finalScore").innerText = "Your Score: " + score;
   document.getElementById("gameOver").style.display = "block";
 }
 
